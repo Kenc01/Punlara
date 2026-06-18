@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Punlara | Our Trees Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#93d69c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbf9f8",
+                        "secondary-fixed": "#ffddb3",
+                        "on-tertiary-fixed-variant": "#414944",
+                        "surface-container-low": "#f5f3f3",
+                        "on-surface-variant": "#404940",
+                        "on-surface": "#1b1c1c",
+                        "on-primary-fixed-variant": "#0c5225",
+                        "surface-variant": "#e4e2e2",
+                        "on-secondary-fixed": "#291800",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fbf9f8",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#eae8e7",
+                        "surface-container-highest": "#e4e2e2",
+                        "secondary": "#825500",
+                        "surface-tint": "#2a6b3b",
+                        "on-primary-container": "#8fd398",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#efeded",
+                        "tertiary-fixed-dim": "#c0c8c2",
+                        "inverse-surface": "#303030",
+                        "primary-container": "#1a5c2e",
+                        "outline-variant": "#c0c9bd",
+                        "on-secondary-container": "#6b4500",
+                        "inverse-on-surface": "#f2f0f0",
+                        "primary": "#00431b",
+                        "tertiary-container": "#4a524d",
+                        "outline": "#70796f",
+                        "on-background": "#1b1c1c",
+                        "primary-fixed": "#aef3b6",
+                        "tertiary-fixed": "#dce4de",
+                        "on-tertiary-fixed": "#161d19",
+                        "surface-dim": "#dbd9d9",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#00210a",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#333b36",
+                        "secondary-fixed-dim": "#ffb952",
+                        "background": "#fbf9f8",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#93d69c",
+                        "on-tertiary-container": "#bdc5be",
+                        "secondary-container": "#fdaf2e",
+                        "on-secondary-fixed-variant": "#633f00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "base": "8px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-xl": ["Be Vietnam Pro"],
+                        "headline-lg-mobile": ["Be Vietnam Pro"],
+                        "headline-md": ["Be Vietnam Pro"],
+                        "headline-lg": ["Be Vietnam Pro"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fbf9f8;
+            font-family: 'Hanken Grotesk', sans-serif;
+            color: #1b1c1c;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .card-shadow {
+            border: 1px solid #E8F0E9;
+            box-shadow: 0 4px 20px rgba(42, 107, 59, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(42, 107, 59, 0.08);
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-surface-variant shadow-sm">
+<div class="flex items-center justify-between px-gutter max-w-[1140px] mx-auto h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1A5C2E] text-3xl" data-icon="park">park</span>
+<span class="font-headline-lg text-headline-lg text-[#1A5C2E] tracking-tight">Punlara</span>
+</div>
+<nav class="hidden md:flex items-center space-x-xl">
+<a class="text-on-surface-variant font-label-md hover:text-[#1A5C2E] transition-colors" href="#">Home</a>
+<a class="text-[#1A5C2E] font-bold border-b-2 border-[#1A5C2E] py-1" href="#">Our Trees</a>
+<a class="text-on-surface-variant font-label-md hover:text-[#1A5C2E] transition-colors" href="#">How It Works</a>
+<a class="text-on-surface-variant font-label-md hover:text-[#1A5C2E] transition-colors" href="#">My Tree</a>
+</nav>
+<button class="bg-[#1A5C2E] text-on-primary px-lg py-2 rounded-full font-label-md active:scale-95 duration-200">
+                Adopt Now
+            </button>
+</div>
+</header>
+<main class="pt-24 pb-xl max-w-[1140px] mx-auto px-gutter">
+<!-- Header Section -->
+<div class="mb-xl">
+<h1 class="font-headline-xl text-headline-xl text-[#1A5C2E] mb-xs">Available Fruit Trees</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                Select a native Mindanao fruit tree to steward. Enjoy fresh harvests while supporting local farmers and sustainable agriculture.
+            </p>
+</div>
+<!-- Filter Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-xl p-lg bg-surface-container-lowest rounded-xl border border-surface-variant shadow-sm">
+<div class="flex flex-wrap gap-md items-center">
+<div class="relative">
+<label class="block font-label-sm text-on-surface-variant mb-xs">Tree Type</label>
+<select class="appearance-none bg-surface-container-low border-none rounded-lg px-md py-2 pr-xl text-body-md text-on-surface focus:ring-2 focus:ring-[#1A5C2E] w-48">
+<option>All Fruits</option>
+<option>Mango</option>
+<option>Durian</option>
+<option>Pomelo</option>
+<option>Mangosteen</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 bottom-2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<label class="block font-label-sm text-on-surface-variant mb-xs">Adoption Tier</label>
+<select class="appearance-none bg-surface-container-low border-none rounded-lg px-md py-2 pr-xl text-body-md text-on-surface focus:ring-2 focus:ring-[#1A5C2E] w-40">
+<option>All Tiers</option>
+<option>Premium</option>
+<option>Classic</option>
+<option>Seedling</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 bottom-2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<label class="block font-label-sm text-on-surface-variant mb-xs">Location</label>
+<select class="appearance-none bg-surface-container-low border-none rounded-lg px-md py-2 pr-xl text-body-md text-on-surface focus:ring-2 focus:ring-[#1A5C2E] w-40">
+<option>Mindanao</option>
+<option>Davao Region</option>
+<option>Cotabato</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 bottom-2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-md self-end md:self-center">
+<span class="font-label-md text-on-surface-variant">42 Trees Found</span>
+<button class="flex items-center gap-xs text-[#1A5C2E] font-label-md">
+<span class="material-symbols-outlined">sort</span>
+                    Sort: Newest
+                </button>
+</div>
+</div>
+<!-- Tree Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-lg">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A lush mango tree loaded with green and yellow fruits in a sunny orchard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1Ly-8CTTQELHTbXMEETBkKECoX64x7XjBJygtWRLC9deOLOF6hBYkUiiNUCI8K5NpVQNCvKbECq7l_V8XnBnblU10gIhBnFArRKw2LDluuewITbWZsm2zhiYXGeJvHOYK4MqBPsSpbS4G6sqHgCYOA3CgnbY8X2nP5Z695jTG_eZo16ZtLRsy-BFNGhf6035M0ghmWRHLzhV18Atxo9_AnnMT5Ga5Kg2PQG4sawZw9FLw3Z2gq5riXaVccmkw59BCy-rlgdYySmsc')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Premium
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Carabao Mango #102</h3>
+<span class="text-secondary font-bold text-lg">₱5,000<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Guimaras Farm, Iloilo</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">120 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-[#1A5C2E] text-white py-3 rounded-full font-label-md hover:bg-opacity-90 transition-colors active:scale-95 duration-200">
+                        Adopt This Tree
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A durian tree with spiky fruits hanging from its branches." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDWZRbaifp-GihSAG3j5gJ5c_zNi9wo6zWklILjdQ9yv6_d2IoO2cBRqq0s356IvlXzS3ejYQnoTGv_wKoK4y5kqpWe1pact6SKpnrNFYX8Lh9RUYLk05hIOCmfViC45h2F_2mno6iCalAVJoc5s7YLq7r6Z8lOchcLu9vSdDTPLKMnZJIAoT-4zZxFDNBqvxgtOlzGvrZFQIo-H9PnP8xlg8wGVcUFCgPjFM-jTGAJKHnP1AbCVpkKm1MtkBJCipw7M_hwI6BRzqs8')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Classic
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow opacity-75">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Puyat Durian #055</h3>
+<span class="text-secondary font-bold text-lg">₱4,200<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Calinan, Davao City</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">80 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-gray-200 text-gray-600 px-2 py-1 rounded-full">Adopted</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-gray-300 text-gray-600 py-3 rounded-full font-label-md cursor-not-allowed">
+                        Adopted
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A young calamansi seedling in a nursery setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCEOkMPTo6VJJYIajxfNB-Wb2jWoxfzXi50_wKMb7P96I3u3yHkNLwqKa7C7gMkKxLsIFKqAMXPX-U6OfFO5d4FtPa5TjcSHsJqlgMHyxT-Vp9RTRRLM0V1Sc3qYlmMNCfcfpzgsXlQA_XgOUOwqy3vgQoJaHXIvTPEvgdKUbZ0u9hf_yGx9taKng7nJitg5QJfVqf7tMFOgDy68hkrTuIUkrqkVcCCNzIHYB12PhOXtn-sKbNbBgmn322FdTRgXD3iQa4ED-e4-i3h')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Seedling
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Calamansi #304</h3>
+<span class="text-secondary font-bold text-lg">₱1,500<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Lipa, Batangas</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">15 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-[#1A5C2E] text-white py-3 rounded-full font-label-md hover:bg-opacity-90 transition-colors active:scale-95 duration-200">
+                        Adopt This Tree
+                    </button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A pomelo tree with large green citrus fruits." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDT7rgxRHQBV1WqAnMpSoPU-XM8HkyNsHqv7mbqWJ5lPtbMEWUFuex80Dm5eWKdEZ_FXKruJ_Z57A-pmzR-Q2YDbfJzdmubVwc_w2ss98QvJOQyGOKOhy6yqT2SOzIZtbQqGx2aDn7c8dy_oKmfdz9zwEi1bjUtduLjHdeXotfzzx2FUUGOPtIiAuuGN7232F_mm2f5WKFR4iKwQPRQHn8l-M7HewwhWn7LurQMZ2WWu7NNNJVLjjyP5iriaxKAGsRcA4bqv2Gno6yL')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Premium
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Raintree Pomelo #210</h3>
+<span class="text-secondary font-bold text-lg">₱4,800<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Tagum, Davao del Norte</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">100 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-[#1A5C2E] text-white py-3 rounded-full font-label-md hover:bg-opacity-90 transition-colors active:scale-95 duration-200">
+                        Adopt This Tree
+                    </button>
+</div>
+</div>
+<!-- Repeated for Row 2 -->
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A mangosteen tree with dark purple fruits ready for harvest." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCIeg_nwn8pwq6XKsUZNRlarXtBJ3THadHxUzYm9x4xYkhdWmHJcgFsMEB8ssJOg_urCqecs3sJ1BsBsuq4AVHVsvOQJEZ2omUInICYDZxzYALXqNzGZ39PpQEZkCNXQ3I2h24sOvACKWTHUFJcvyCdXARqgFf27T_f8ZslqgwuVu_8Mdl3X08LNYyvsljW2ZHP5m97Q-GWSyLsSvfef4Nd8D6q8szHMR1-JWkZnOYY_w4P6ZNZdjj7r5kDqyVSzMbGvS3iCaBfVtkx')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Premium
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Mangosteen #112</h3>
+<span class="text-secondary font-bold text-lg">₱6,000<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Kidapawan, Cotabato</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">60 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">Available</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-[#1A5C2E] text-white py-3 rounded-full font-label-md hover:bg-opacity-90 transition-colors active:scale-95 duration-200">
+                        Adopt This Tree
+                    </button>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden card-shadow flex flex-col">
+<div class="relative aspect-video">
+<div class="w-full h-full" data-alt="A rambutan tree full of red, hairy fruits." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYCxyETZX4HXzZe2MFF1aB-A9WdyTD6uoW4w_Hrfm-qBCROyjzvsXMUYDDw0nZ5BeR3fiIPQZs--Lx-rOmnJgZvkcjU_CsvSri4GLp6cHTXQAqu8jy-Y3zLstZmonGW-GAczHEAbfa-sXY5lB3eUQ2ssX9ag0ZNG5agouH_e6nB7jBcCcoPxlCqD6uZUedJSaU-P3d9sm6wKF5jb3UTARpOyWcshpl6n6nGWTUX4DwiRU_nE03VkavXslLWrOv1ukMzeNge-bFbGQc')"></div>
+<div class="absolute top-md right-md bg-[#F4A726] text-white px-md py-xs rounded-full font-label-sm shadow-sm">
+                        Classic
+                    </div>
+</div>
+<div class="p-lg flex flex-col flex-grow opacity-75">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-[#1A5C2E]">Rambutan #405</h3>
+<span class="text-secondary font-bold text-lg">₱3,500<span class="text-sm text-on-surface-variant font-normal">/yr</span></span>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant mb-md">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-sm">Bansalan, Davao del Sur</span>
+</div>
+<div class="mb-lg space-y-2">
+<div class="flex justify-between items-center bg-surface-container-low px-3 py-2 rounded-lg">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Est. Harvest</span>
+<span class="font-label-sm text-[#1A5C2E] font-bold">45 kg</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Status</span>
+<span class="font-label-sm bg-gray-200 text-gray-600 px-2 py-1 rounded-full">Adopted</span>
+</div>
+</div>
+<button class="mt-auto w-full bg-gray-300 text-gray-600 py-3 rounded-full font-label-md cursor-not-allowed">
+                        Adopted
+                    </button>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="col-span-full flex flex-col items-center py-xl">
+<button class="flex items-center gap-sm bg-surface-container-high text-[#1A5C2E] px-xl py-lg rounded-full font-label-md hover:bg-surface-variant transition-all active:scale-95">
+<span class="material-symbols-outlined">refresh</span>
+                    Load More Fruit Trees
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-dim border-t border-surface-variant w-full py-xl">
+<div class="flex flex-col md:flex-row items-center justify-between px-gutter max-w-[1140px] mx-auto space-y-md md:space-y-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1A5C2E] text-2xl" data-icon="park">park</span>
+<span class="font-headline-md text-headline-md text-[#1A5C2E]">Punlara</span>
+</div>
+<nav class="flex flex-wrap justify-center gap-xl">
+<a class="text-on-surface-variant font-body-md hover:underline hover:text-secondary transition-all" href="#">Home</a>
+<a class="text-[#1A5C2E] font-body-md hover:underline hover:text-secondary transition-all" href="#">Our Trees</a>
+<a class="text-on-surface-variant font-body-md hover:underline hover:text-secondary transition-all" href="#">How It Works</a>
+<a class="text-on-surface-variant font-body-md hover:underline hover:text-secondary transition-all" href="#">My Tree</a>
+</nav>
+<p class="font-body-md text-body-md text-on-surface-variant text-center md:text-right">
+                © 2024 Punlara. Rooted in Mindanao. Delivered to You.
+            </p>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface dark:bg-surface-dim border-t border-surface-variant shadow-lg flex justify-around items-center h-16 px-xs">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-all px-4 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#F4A726] text-white rounded-full px-4 py-1 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="forest" style="font-variation-settings: 'FILL' 1;">forest</span>
+<span class="font-label-sm text-label-sm">Trees</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-all px-4 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+<span class="font-label-sm text-label-sm">How</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-all px-4 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-sm text-label-sm">My Tree</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for filter hover states
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('mouseenter', () => {
+                select.parentElement.classList.add('scale-[1.02]');
+            });
+            select.addEventListener('mouseleave', () => {
+                select.parentElement.classList.remove('scale-[1.02]');
+            });
+        });
+    </script>
+</body></html>

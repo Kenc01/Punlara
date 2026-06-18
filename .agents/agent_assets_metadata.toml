@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "_H0zzUS6GOLcbn88nRXOB"
+uri = "file://artifacts/punlara/public/hero-orchard.png"
+type = "image"
+title = "Orchard aerial view"
+
+[[generated]]
+id = "TXa8tjQrqE35kfu4G5qM0"
+uri = "file://artifacts/punlara/public/tree-mangosteen.png"
+type = "image"
+title = "Mangosteen on tree"
+
+[[generated]]
+id = "_PbkTCrBPN6y7RDSQ9ZeM"
+uri = "file://artifacts/punlara/public/tree-rambutan.png"
+type = "image"
+title = "Rambutan on tree"
+
+[[generated]]
+id = "wKeJuswJW_D_EtFSVAyGh"
+uri = "file://artifacts/punlara/public/tree-lanzones.png"
+type = "image"
+title = "Lanzones on tree"
+
+[[generated]]
+id = "1LA3MZ2daPUQ6PcBPZmoy"
+uri = "file://artifacts/punlara/public/farmer-portrait.png"
+type = "image"
+title = "Smiling farmer portrait"

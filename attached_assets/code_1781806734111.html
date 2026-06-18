@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Punlara | Adopt a Tree. Own the Harvest.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#93d69c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#ffffff",
+                    "secondary-fixed": "#ffddb3",
+                    "on-tertiary-fixed-variant": "#414944",
+                    "surface-container-low": "#f5f3f3",
+                    "on-surface-variant": "#404940",
+                    "on-surface": "#1b1c1c",
+                    "on-primary-fixed-variant": "#0c5225",
+                    "surface-variant": "#e4e2e2",
+                    "on-secondary-fixed": "#291800",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#eae8e7",
+                    "surface-container-highest": "#e4e2e2",
+                    "secondary": "#F4A726",
+                    "surface-tint": "#2a6b3b",
+                    "on-primary-container": "#8fd398",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#efeded",
+                    "tertiary-fixed-dim": "#c0c8c2",
+                    "inverse-surface": "#303030",
+                    "primary-container": "#1a5c2e",
+                    "outline-variant": "#c0c9bd",
+                    "on-secondary-container": "#6b4500",
+                    "inverse-on-surface": "#f2f0f0",
+                    "primary": "#1A5C2E",
+                    "tertiary-container": "#4a524d",
+                    "outline": "#70796f",
+                    "on-background": "#1b1c1c",
+                    "primary-fixed": "#aef3b6",
+                    "tertiary-fixed": "#dce4de",
+                    "on-tertiary-fixed": "#161d19",
+                    "surface-dim": "#dbd9d9",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#00210a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#333b36",
+                    "secondary-fixed-dim": "#ffb952",
+                    "background": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#93d69c",
+                    "on-tertiary-container": "#bdc5be",
+                    "secondary-container": "#fdaf2e",
+                    "on-secondary-fixed-variant": "#633f00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "md": "16px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "base": "8px",
+                    "container-margin": "20px"
+            },
+            "fontFamily": {
+                    "body-md": ["Hanken Grotesk"],
+                    "label-md": ["Hanken Grotesk"],
+                    "headline-xl": ["Be Vietnam Pro"],
+                    "headline-lg-mobile": ["Be Vietnam Pro"],
+                    "headline-md": ["Be Vietnam Pro"],
+                    "headline-lg": ["Be Vietnam Pro"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #ffffff; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-card {
+            background: #ffffff;
+            border: 1px solid #E8F0E9;
+            box-shadow: 0 4px 20px rgba(26, 92, 46, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tonal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(26, 92, 46, 0.08);
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #1A5C2E 0%, #2a6b3b 100%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 glass-header border-b border-surface-variant shadow-sm h-16">
+<div class="flex items-center justify-between px-gutter max-w-[1140px] mx-auto h-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">park</span>
+<span class="font-headline-lg text-primary tracking-tight">Punlara</span>
+</div>
+<nav class="hidden md:flex items-center space-x-xl">
+<a class="text-primary font-bold border-b-2 border-primary transition-colors py-1" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-1" href="#trees">Our Trees</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-1" href="#how">How It Works</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors py-1" href="#">My Tree</a>
+</nav>
+<button class="bg-secondary text-white px-lg py-2 rounded-full font-label-md active:scale-95 duration-200 shadow-md">
+                Adopt Now
+            </button>
+</div>
+</header>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center overflow-hidden px-gutter">
+<div class="max-w-[1140px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-xl items-center relative z-10">
+<div class="space-y-lg">
+<div class="inline-flex items-center gap-2 px-md py-1 bg-primary-fixed text-on-primary-fixed rounded-full font-label-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+                        Sustainable Investing in Mindanao
+                    </div>
+<h1 class="font-headline-xl text-[56px] leading-[1.1] text-primary">
+                        Adopt a Tree. <br/>
+<span class="text-secondary">Own the Harvest.</span>
+</h1>
+<p class="text-body-lg text-on-surface-variant max-w-lg">
+                        Own a real, named fruit tree on a Mindanao farm. Watch it grow. Receive your harvest.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-md pt-md">
+<button class="bg-primary text-white h-14 px-xl rounded-full font-label-md flex items-center justify-center gap-2 shadow-lg hover:bg-primary-container transition-all">
+                            Adopt a Tree Now
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border-1.5 border-primary text-primary h-14 px-xl rounded-full font-label-md flex items-center justify-center hover:bg-surface-container transition-all">
+                            View Impact Report
+                        </button>
+</div>
+</div>
+<div class="relative group hidden lg:block">
+<div class="absolute -inset-4 bg-primary-fixed/20 rounded-[48px] blur-3xl group-hover:bg-primary-fixed/30 transition-all duration-700"></div>
+<div class="relative h-[560px] w-full rounded-[32px] overflow-hidden shadow-2xl">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-110 group-hover:scale-100" data-alt="A lush, high-resolution aerial photograph of a sustainable fruit orchard in Mindanao at golden hour. The image features organized rows of vibrant green fruit trees interspersed with tropical flora, illuminated by soft, warm sunlight filtering through the canopy. The aesthetic is clean, professional, and nature-focused, reflecting a premium investment platform's quality and environmental stewardship." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXDad7lSnpUNw5oQaqhYEUeM3nD8zFKaPFBTItDnZlhwLCqZq1MQzRQMbPx3xNl2BTX2bI4Ho7DuEk4TtbCRqizerBXMktGa-GoGjdFs5uIkAiR2MQ5q_xR4TvebCOMVhN1Go0sbMchhAA9xF16limFGoIjECh18K2UpQl6I1cfhF6CazIl1xDQO_ycwdHk6K1mTplr1XKbP3H9jylrabKu4SM79SxkVU7D3bLmc7mW0kGrkEMtETHyEsan9mB9X7AN786cxbd1pSS')">
+</div>
+<!-- Glass Stat Card -->
+<div class="absolute bottom-lg right-lg p-lg glass-header rounded-xl border border-white/20 shadow-xl max-w-[240px]">
+<p class="font-label-sm text-secondary uppercase tracking-widest mb-1">Live Growth</p>
+<p class="font-headline-md text-primary">+12.4% yield</p>
+<div class="w-full h-1 bg-surface-variant rounded-full mt-2 overflow-hidden">
+<div class="h-full progress-gradient w-[72%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-xl bg-surface-container-lowest" id="how">
+<div class="max-w-[1140px] mx-auto px-gutter">
+<div class="text-center mb-xl">
+<h2 class="font-headline-lg text-primary mb-md">Modern Stewardship in 4 Steps</h2>
+<p class="text-body-md text-on-surface-variant max-w-2xl mx-auto">Our transparent blockchain-backed process ensures your investment grows as fast as our trees do.</p>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-lg relative">
+<!-- Line connecting steps (hidden on mobile) -->
+<div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-surface-variant -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="bg-white z-10 p-md flex flex-col items-center text-center space-y-sm flex-1">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-3xl">search</span>
+</div>
+<h3 class="font-headline-md text-primary text-xl">Choose a Tree</h3>
+</div>
+<!-- Step 2 -->
+<div class="bg-white z-10 p-md flex flex-col items-center text-center space-y-sm flex-1">
+<div class="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center text-secondary shadow-sm">
+<span class="material-symbols-outlined text-3xl">park</span>
+</div>
+<h3 class="font-headline-md text-primary text-xl">We Plant &amp; Tag It</h3>
+</div>
+<!-- Step 3 -->
+<div class="bg-white z-10 p-md flex flex-col items-center text-center space-y-sm flex-1">
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-sm">
+<span class="material-symbols-outlined text-3xl">insights</span>
+</div>
+<h3 class="font-headline-md text-primary text-xl">Get Monthly Updates</h3>
+</div>
+<!-- Step 4 -->
+<div class="bg-white z-10 p-md flex flex-col items-center text-center space-y-sm flex-1">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center text-primary-fixed shadow-sm">
+<span class="material-symbols-outlined text-3xl">shopping_basket</span>
+</div>
+<h3 class="font-headline-md text-primary text-xl">Receive Your Harvest</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Trees -->
+<section class="py-xl" id="trees">
+<div class="max-w-[1140px] mx-auto px-gutter">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div class="max-w-xl">
+<h2 class="font-headline-lg text-primary">Featured Mindanao Varieties</h2>
+<p class="text-body-md text-on-surface-variant mt-xs">High-demand tropical fruits with sustainable yield potential.</p>
+</div>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline" href="#">
+                        View All Varieties <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Tree Card 1: Mangosteen -->
+<div class="tonal-card group rounded-[24px] overflow-hidden flex flex-col">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A professional close-up photograph of a heavy cluster of purple Mangosteen fruit hanging from a vibrant green branch in a sun-drenched orchard. The lighting is soft and natural, emphasizing the waxy texture of the fruit and the delicate green leaves. The background shows a blurry Mindanao farm setting, creating a high-end nature-tech aesthetic with deep greens and rich purples." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcm5BFt8GxeZQjZEZ23dJAO3DQjwJDzqCysrye77yijoXYHp2cfL_xZLJ7wrk-AhKsAhQd9g2o8y4uEXsHyxlbEVsDMRJYkBnK3sEg5wG6NTLhAZLq9pNNk6AOncjUJLV91RUEhbX6mXM1JgvE7zWzmQQA6E4RKoCqjzGVT5Oy-P4J3o_6UwDygKo43GXpiYfHDjOwXBJ99mqDCJAunOORtk-Le_fZYnbpC68M-NIBwMn245NSEZGEkOKn-ncGxefN0-9UhvzLJo9n"/>
+<div class="absolute top-md right-md bg-white/90 backdrop-blur-sm px-md py-1 rounded-full text-primary font-label-sm shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Davao, Mindanao
+                            </div>
+</div>
+<div class="p-lg space-y-md flex-grow">
+<h3 class="font-headline-md text-primary">Mindanao Mangosteen</h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-md">
+<span>Est. Annual Return</span>
+<span class="text-primary font-bold">14.2%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full progress-gradient w-[85%]"></div>
+</div>
+<div class="flex justify-between items-center pt-md">
+<span class="text-primary font-headline-md">₱2,500 <small class="text-on-surface-variant font-body-md">/ yr</small></span>
+<button class="bg-primary text-white px-4 py-2 rounded-full font-label-md active:scale-95 transition-transform flex items-center gap-1">
+                                Adopt
+                            </button>
+</div>
+</div>
+</div>
+<!-- Tree Card 2: Rambutan -->
+<div class="tonal-card group rounded-[24px] overflow-hidden flex flex-col">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A stunning macro shot of bright red Rambutan fruit on a tree, glistening with fresh morning dew. The background is a soft-focus tropical landscape under a clear sky, highlighting the intricate hair-like textures of the fruit skins. The color palette is dominated by vibrant reds and deep forest greens, evoking a sense of organic vitality and high-performance agricultural management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiKQFpigtG5g06oGaxyLfuiS2SSrQtsymiV52xhTXinMtuIGBHZOUuhX4jKdOGttwlQnjUr6JZkFev0uEDiKc5hCzUxJnzampZq_1dRHbrmlS_pWxM3Z1RvbmAXjWh3mWZQW4fWJBdyvdVoCPRmZVoktgyyyfRx4fx1G-ZLjsutSUCSDbZlr9xQx4freNlwPL-qFRLbKd05SHOZuquiJDws1jAtHQx1MS5mo3ItGHmlbNIhNzUKfpAKQejgeZMx5IowvHncuskZk7l"/>
+<div class="absolute top-md right-md bg-white/90 backdrop-blur-sm px-md py-1 rounded-full text-primary font-label-sm shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Davao, Mindanao
+                            </div>
+</div>
+<div class="p-lg space-y-md flex-grow">
+<h3 class="font-headline-md text-primary">Red Rambutan</h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-md">
+<span>Est. Annual Return</span>
+<span class="text-primary font-bold">11.8%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full progress-gradient w-[45%]"></div>
+</div>
+<div class="flex justify-between items-center pt-md">
+<span class="text-primary font-headline-md">₱1,500 <small class="text-on-surface-variant font-body-md">/ yr</small></span>
+<button class="bg-primary text-white px-4 py-2 rounded-full font-label-md active:scale-95 transition-transform flex items-center gap-1">
+                                Adopt
+                            </button>
+</div>
+</div>
+</div>
+<!-- Tree Card 3: Lanzones -->
+<div class="tonal-card group rounded-[24px] overflow-hidden flex flex-col">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A high-quality image of golden-brown Lanzones fruit bunches growing directly from the trunk of an ancient Mindanao fruit tree. The scene is shot with high-key lighting that makes the fruit appear luminous and appetizing against the dark, textured bark. The composition is artistic and clean, symbolizing the intersection of traditional Mindanao heritage and modern tech-enabled investment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADoa5E0zAKHnmeLHoL7vC1BfRth7hHWkkOXUCDF-mFNO28t888xqStU5lMqoler1VWl5xMOLUaZ27L5NzG6raf20YyoPdPhsSlIMANgI4qE5NbN9fSltFo2zU3L4UV0IJ-nYjJVyIdPrRNVmtNBmOhJoS0OIySkad2LJlU71be164Xbe8NAMj_Yod1-cKGKtitV3tWmkwilfpmeUnTrSrw24YdwIysQgNRg8Kkr53-5WFkZfzhWoHMQ7c2LHiuhugPI1uf8pyblE4K"/>
+<div class="absolute top-md right-md bg-white/90 backdrop-blur-sm px-md py-1 rounded-full text-primary font-label-sm shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Davao, Mindanao
+                            </div>
+</div>
+<div class="p-lg space-y-md flex-grow">
+<h3 class="font-headline-md text-primary">Camiguin Lanzones</h3>
+<div class="flex items-center justify-between text-on-surface-variant font-label-md">
+<span>Est. Annual Return</span>
+<span class="text-primary font-bold">16.5%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full progress-gradient w-[15%]"></div>
+</div>
+<div class="flex justify-between items-center pt-md">
+<span class="text-primary font-headline-md">₱1,500 <small class="text-on-surface-variant font-body-md">/ yr</small></span>
+<button class="bg-primary text-white px-4 py-2 rounded-full font-label-md active:scale-95 transition-transform flex items-center gap-1">
+                                Adopt
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust & Impact -->
+<section class="py-xl mb-xl bg-primary text-white relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full bg-primary-container opacity-20 -skew-x-12 translate-x-1/2"></div>
+<div class="max-w-[1140px] mx-auto px-gutter relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
+<div>
+<h2 class="font-headline-lg text-white mb-md">Investing in the Roots</h2>
+<p class="text-body-lg text-white opacity-90 max-w-lg mb-lg">
+                            We bridge the gap between Mindanao's small-scale farmers and global impact investors. Your adoption helps provide organic fertilizer, advanced irrigation, and fair wages.
+                        </p>
+<div class="grid grid-cols-2 gap-lg">
+<div>
+<p class="font-headline-xl text-secondary">12,400+</p>
+<p class="text-label-md opacity-80">Trees Planted</p>
+</div>
+<div>
+<p class="font-headline-xl text-secondary">240+</p>
+<p class="text-label-md opacity-80">Local Farmers Supported</p>
+</div>
+</div>
+</div>
+<div class="rounded-3xl overflow-hidden shadow-2xl h-80">
+<img class="w-full h-full object-cover" data-alt="A portrait of a smiling Mindanao farmer in traditional yet clean work attire, standing proudly in front of a thriving, sunlit orchard. The farmer is holding a small sapling, looking directly at the camera with an expression of trust and partnership. The background is a soft-focus vista of green hills under a bright sky, representing the human and social impact of the Punlara platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAabMrbmoWKpj4PnPqIKyuRW5TjXiA6_kxUbJLC-Nzv_fcMXmRyibjxoiuLf-ZLY1CqLIdh32Lbqz1Fe8n6EEMTi2Q3irFuDBCJyQueK2LrDhvYYHV_kyzNksUIyNI0oi87rvpKxqfRzRXzMr_T1pgFTnjW5C6s325tEOyupHgvEPuhHqYuYBfzELUqkYc5KKqsYpKVt_kxbKwURtPQYiz81zxwrHv51Va9aoM4nv0EVnRUy7Ua2YF3NoIZ_MRWAzljN-eYp2Ov6OQ"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-surface-variant">
+<div class="flex flex-col md:flex-row items-center justify-between px-gutter max-w-[1140px] mx-auto space-y-md md:space-y-0">
+<div class="flex flex-col items-center md:items-start">
+<div class="flex items-center gap-2 mb-xs">
+<span class="material-symbols-outlined text-primary text-2xl">park</span>
+<span class="font-headline-md text-primary">Punlara</span>
+</div>
+<p class="font-body-md text-on-surface-variant text-center md:text-left">
+                    Rooted in Mindanao. Delivered to You.
+                </p>
+</div>
+<div class="flex space-x-lg">
+<a class="text-on-surface-variant hover:underline hover:text-secondary transition-all font-body-md" href="#">Home</a>
+<a class="text-on-surface-variant hover:underline hover:text-secondary transition-all font-body-md" href="#">Our Trees</a>
+<a class="text-on-surface-variant hover:underline hover:text-secondary transition-all font-body-md" href="#">How It Works</a>
+<a class="text-on-surface-variant hover:underline hover:text-secondary transition-all font-body-md" href="#">My Tree</a>
+</div>
+<div class="flex space-x-md">
+<a class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary hover:bg-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">language</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary hover:bg-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">share</span>
+</a>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Shell (BottomNavBar) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface border-t border-surface-variant shadow-lg h-16 flex justify-around items-center px-xs">
+<a class="flex flex-col items-center justify-center bg-secondary/20 text-secondary rounded-full px-4 py-1 active:scale-90 duration-150 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 duration-150 transition-all" href="#trees">
+<span class="material-symbols-outlined">forest</span>
+<span class="font-label-sm">Trees</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 duration-150 transition-all" href="#how">
+<span class="material-symbols-outlined">info</span>
+<span class="font-label-sm">How</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 duration-150 transition-all" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-sm">My Tree</span>
+</a>
+</nav>
+<script>
+        // Simple scroll observer for header glass effect enhancement
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>
