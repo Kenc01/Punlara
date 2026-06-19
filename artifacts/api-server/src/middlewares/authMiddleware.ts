@@ -1,14 +1,8 @@
-import * as oidc from "openid-client";
+import { createRemoteJWKSet, jwtVerify } from "jose";
 import { type Request, type Response, type NextFunction } from "express";
 import type { AuthUser } from "@workspace/api-zod";
-import {
-  clearSession,
-  getOidcConfig,
-  getSessionId,
-  getSession,
-  updateSession,
-  type SessionData,
-} from "../lib/auth";
+import { db, usersTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
 
 declare global {
   namespace Express {
@@ -16,7 +10,6 @@ declare global {
 
     interface Request {
       isAuthenticated(): this is AuthedRequest;
-
       user?: User | undefined;
     }
 
@@ -26,32 +19,14 @@ declare global {
   }
 }
 
-async function refreshIfExpired(
-  sid: string,
-  session: SessionData,
-): Promise<SessionData | null> {
-  const now = Math.floor(Date.now() / 1000);
-  if (!session.expires_at || now <= session.expires_at) return session;
-
-  if (!session.refresh_token) return null;
-
-  try {
-    const config = await getOidcConfig();
-    const tokens = await oidc.refreshTokenGrant(
-      config,
-      session.refresh_token,
-    );
-    session.access_token = tokens.access_token;
-    session.refresh_token = tokens.refresh_token ?? session.refresh_token;
-    session.expires_at = tokens.expiresIn()
-      ? now + tokens.expiresIn()!
-      : session.expires_at;
-    await updateSession(sid, session);
-    return session;
-  } catch {
-    return null;
-  }
+function getClerkJwksUrl(): string {
+  const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY || "";
+  const b64 = publishableKey.replace(/^pk_(test|live)_/, "");
+  const decoded = Buffer.from(b64, "base64").toString("utf-8").replace(/\$$/, "");
+  return `https://${decoded}/.well-known/jwks.json`;
 }
+
+const JWKS = createRemoteJWKSet(new URL(getClerkJwksUrl()));
 
 export async function authMiddleware(
   req: Request,
@@ -62,26 +37,50 @@ export async function authMiddleware(
     return this.user != null;
   } as Request["isAuthenticated"];
 
-  const sid = getSessionId(req);
-  if (!sid) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer ")) {
     next();
     return;
   }
 
-  const session = await getSession(sid);
-  if (!session?.user?.id) {
-    await clearSession(res, sid);
-    next();
-    return;
+  const token = authHeader.slice(7);
+
+  try {
+    const { payload } = await jwtVerify(token, JWKS, {
+      algorithms: ["RS256"],
+    });
+
+    const clerkUserId = payload.sub as string;
+    if (!clerkUserId) {
+      next();
+      return;
+    }
+
+    const [dbUser] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, clerkUserId));
+
+    if (dbUser) {
+      req.user = {
+        id: dbUser.id,
+        email: dbUser.email,
+        firstName: dbUser.firstName,
+        lastName: dbUser.lastName,
+        profileImageUrl: dbUser.profileImageUrl,
+      };
+    } else {
+      req.user = {
+        id: clerkUserId,
+        email: null,
+        firstName: null,
+        lastName: null,
+        profileImageUrl: null,
+      };
+    }
+  } catch {
+    // Invalid or expired token — treat as unauthenticated
   }
 
-  const refreshed = await refreshIfExpired(sid, session);
-  if (!refreshed) {
-    await clearSession(res, sid);
-    next();
-    return;
-  }
-
-  req.user = refreshed.user;
   next();
 }

@@ -1,0 +1,2 @@
+- [Clerk Auth Migration](clerk-auth.md) — switched from Replit OIDC to external Clerk (React + Vite); JWKS verification in backend via `jose`.
+- [Harvest Countdown](harvest-countdown.md) — computeHarvestCountdown hook wired into MyTree; harvestSoon/VeryClose/Ready props on LivingTree.

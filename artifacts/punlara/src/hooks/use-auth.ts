@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useUser, useClerk } from "@clerk/react";
 
 export interface AuthUser {
   id: string;
@@ -17,40 +17,28 @@ interface AuthState {
 }
 
 export function useAuth(): AuthState {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoaded, isSignedIn } = useUser();
+  const { openSignIn, signOut } = useClerk();
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/auth/user", { credentials: "include" })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json() as Promise<{ user: AuthUser | null }>;
-      })
-      .then((data) => {
-        if (!cancelled) {
-          setUser(data.user ?? null);
-          setIsLoading(false);
+  const login = () => openSignIn({});
+  const logout = () => signOut({ redirectUrl: "/" });
+
+  const authUser: AuthUser | null =
+    isSignedIn && user
+      ? {
+          id: user.id,
+          email: user.primaryEmailAddress?.emailAddress ?? null,
+          firstName: user.firstName ?? null,
+          lastName: user.lastName ?? null,
+          profileImageUrl: user.imageUrl ?? null,
         }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setUser(null);
-          setIsLoading(false);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+      : null;
 
-  const login = useCallback(() => {
-    window.location.href = `/api/login?returnTo=${encodeURIComponent("/")}`;
-  }, []);
-
-  const logout = useCallback(() => {
-    window.location.href = "/api/logout";
-  }, []);
-
-  return { user, isLoading, isAuthenticated: !!user, login, logout };
+  return {
+    user: authUser,
+    isLoading: !isLoaded,
+    isAuthenticated: !!isSignedIn,
+    login,
+    logout,
+  };
 }

@@ -1,10 +1,11 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
+import { SignInButton, UserButton } from "@clerk/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Navbar() {
   const [location] = useLocation();
-  const { user, isAuthenticated, login, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -40,36 +41,30 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-4">
           {!isAuthenticated ? (
-            <button 
-              onClick={() => login()}
-              className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
-              data-testid="button-login"
-            >
-              Log In
-            </button>
+            <SignInButton mode="modal">
+              <button
+                className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+                data-testid="button-login"
+              >
+                Log In
+              </button>
+            </SignInButton>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Avatar className="w-8 h-8 border border-border">
-                  <AvatarImage src={user?.profileImageUrl || undefined} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
-                    {user?.firstName?.charAt(0) || "U"}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium text-primary hidden lg:inline-block" data-testid="text-username">
-                  {user?.firstName || "User"}
-                </span>
-              </div>
-              <button 
-                onClick={() => logout()}
-                className="text-sm font-semibold text-muted-foreground hover:text-primary transition-colors"
-                data-testid="button-logout"
-              >
-                Log Out
-              </button>
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8 border border-border",
+                  },
+                }}
+                afterSignOutUrl="/"
+              />
+              <span className="text-sm font-medium text-primary hidden lg:inline-block" data-testid="text-username">
+                {user?.firstName || "User"}
+              </span>
             </div>
           )}
-          
+
           <Link href="/adopt">
             <button className="bg-secondary hover:bg-secondary/90 text-white font-semibold py-2.5 px-6 rounded-full transition-all" data-testid="button-adopt-now">
               Adopt Now
