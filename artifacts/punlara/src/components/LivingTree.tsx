@@ -6,6 +6,9 @@ interface LivingTreeProps {
   weather: TreeWeather | undefined;
   isLoading?: boolean;
   treeName?: string;
+  harvestSoon?: boolean;
+  harvestVeryClose?: boolean;
+  harvestReady?: boolean;
 }
 
 const SKY_GRADIENTS: Record<TreeMood, string> = {
@@ -120,11 +123,48 @@ function HarvestSparkles() {
   );
 }
 
-function TreeSVG({ mood, condition }: { mood: TreeMood; condition: WeatherCondition }) {
-  const colors = FOLIAGE[mood];
-  const isHarvest = condition === "sunny" && mood === "happy";
-  const isStormy = mood === "sheltered";
-  const sway = isStormy ? [0, -3, 3, -3, 0] : [0, 0];
+function GoldenHarvestGlow() {
+  return (
+    <div className="absolute inset-0 pointer-events-none rounded-[24px] overflow-hidden">
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "radial-gradient(ellipse at 50% 55%, rgba(255,215,0,0.25) 0%, transparent 70%)",
+          animationName: "sunPulse",
+          animationDuration: "2s",
+          animationIterationCount: "infinite",
+          animationTimingFunction: "ease-in-out",
+        }}
+      />
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            left: `${10 + (i * 75 / 12)}%`,
+            top: `${15 + (i % 4) * 18}%`,
+            fontSize: i % 3 === 0 ? "18px" : "13px",
+            animationName: "sparkle",
+            animationDuration: `${1.2 + (i * 0.25)}s`,
+            animationDelay: `${i * 0.15}s`,
+            animationIterationCount: "infinite",
+          }}
+        >
+          {i % 4 === 0 ? "✨" : i % 4 === 1 ? "⭐" : i % 4 === 2 ? "🌟" : "✨"}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TreeSVG({ mood, condition, harvestOverride }: { mood: TreeMood; condition: WeatherCondition; harvestOverride?: "soon" | "very_close" | "ready" }) {
+  const effectiveMood = harvestOverride ? "happy" : mood;
+  const colors = harvestOverride
+    ? { main: harvestOverride === "ready" ? "#F9A825" : "#43A047", light: harvestOverride === "ready" ? "#FFD54F" : "#66BB6A", dark: harvestOverride === "ready" ? "#F57F17" : "#2E7D32" }
+    : FOLIAGE[effectiveMood];
+  const showFruits = harvestOverride || (condition === "sunny" && mood === "happy");
+  const isStormy = mood === "sheltered" && !harvestOverride;
+  const sway = isStormy ? [0, -3, 3, -3, 0] : harvestOverride === "very_close" || harvestOverride === "ready" ? [0, 1, -1, 1, 0] : [0, 0];
 
   return (
     <motion.div
@@ -165,7 +205,7 @@ function TreeSVG({ mood, condition }: { mood: TreeMood; condition: WeatherCondit
         <circle cx="80" cy="170" r="22" fill={colors.light} opacity="0.5" />
         
         {/* Fruits for harvest/happy mode */}
-        {isHarvest && [
+        {showFruits && [
           { cx: 115, cy: 145, r: 7, fill: "#FF6B35" },
           { cx: 158, cy: 138, r: 8, fill: "#FFB300" },
           { cx: 100, cy: 175, r: 6, fill: "#E91E63" },
@@ -207,21 +247,35 @@ function TreeSVG({ mood, condition }: { mood: TreeMood; condition: WeatherCondit
   );
 }
 
-export default function LivingTree({ weather, isLoading, treeName }: LivingTreeProps) {
-  const [showMessage, setShowMessage] = useState(true);
+export default function LivingTree({ weather, isLoading, treeName, harvestSoon, harvestVeryClose, harvestReady }: LivingTreeProps) {
   const mood: TreeMood = weather?.mood ?? "content";
   const condition: WeatherCondition = weather?.condition ?? "partly_cloudy";
 
-  useEffect(() => {
-    setShowMessage(true);
-    const t = setTimeout(() => setShowMessage(true), 100);
-    return () => clearTimeout(t);
-  }, [weather?.condition]);
+  const harvestOverride: "soon" | "very_close" | "ready" | undefined =
+    harvestReady ? "ready" : harvestVeryClose ? "very_close" : harvestSoon ? "soon" : undefined;
+
+  const skyClass = harvestReady
+    ? "from-amber-500 via-yellow-400 to-amber-200"
+    : harvestVeryClose
+    ? "from-amber-400 via-yellow-300 to-emerald-100"
+    : harvestSoon
+    ? "from-sky-400 via-emerald-300 to-yellow-100"
+    : SKY_GRADIENTS[mood];
+
+  const moodLabel = harvestReady
+    ? "Harvest Ready! 🎉"
+    : harvestVeryClose
+    ? "Almost Harvest Time!"
+    : harvestSoon
+    ? "Harvest Coming Soon"
+    : MOOD_LABELS[mood];
+
+  const moodIcon = harvestOverride ? "emoji_events" : MOOD_ICONS[mood];
 
   return (
     <div className="w-full space-y-4">
       {/* Animated tree card */}
-      <div className={`relative w-full rounded-[24px] overflow-hidden bg-gradient-to-b ${SKY_GRADIENTS[mood]} min-h-[320px] flex flex-col`}>
+      <div className={`relative w-full rounded-[24px] overflow-hidden bg-gradient-to-b ${skyClass} min-h-[320px] flex flex-col`}>
         
         {/* CSS animations injected inline */}
         <style>{`
@@ -245,13 +299,19 @@ export default function LivingTree({ weather, isLoading, treeName }: LivingTreeP
           }
         `}</style>
 
-        {/* Weather overlays */}
-        {(condition === "rainy" || condition === "light_rain") && (
-          <RainDrops intensity={condition === "rainy" ? "heavy" : "light"} />
+        {/* Harvest overlays take priority over weather overlays */}
+        {harvestOverride ? (
+          <GoldenHarvestGlow />
+        ) : (
+          <>
+            {(condition === "rainy" || condition === "light_rain") && (
+              <RainDrops intensity={condition === "rainy" ? "heavy" : "light"} />
+            )}
+            {condition === "sunny" && <SunRays />}
+            {condition === "stormy" && <StormOverlay />}
+            {mood === "happy" && condition === "sunny" && <HarvestSparkles />}
+          </>
         )}
-        {condition === "sunny" && <SunRays />}
-        {condition === "stormy" && <StormOverlay />}
-        {mood === "happy" && condition === "sunny" && <HarvestSparkles />}
 
         {/* Tree name tag */}
         {treeName && (
@@ -260,24 +320,24 @@ export default function LivingTree({ weather, isLoading, treeName }: LivingTreeP
           </div>
         )}
 
-        {/* Mood badge */}
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full shadow-sm">
-          <span className="material-symbols-outlined text-[14px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
-            {MOOD_ICONS[mood]}
+        {/* Mood / harvest badge */}
+        <div className={`absolute top-4 right-4 flex items-center gap-1.5 backdrop-blur px-3 py-1.5 rounded-full shadow-sm ${harvestOverride ? "bg-amber-400 text-white" : "bg-white/90"}`}>
+          <span className={`material-symbols-outlined text-[14px] ${harvestOverride ? "text-white" : "text-primary"}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+            {moodIcon}
           </span>
-          <span className="text-xs font-bold text-primary">{MOOD_LABELS[mood]}</span>
+          <span className={`text-xs font-bold ${harvestOverride ? "text-white" : "text-primary"}`}>{moodLabel}</span>
         </div>
 
         {/* Tree SVG */}
         <motion.div
-          key={mood}
+          key={`${mood}-${harvestOverride}`}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           className="flex-1 flex items-end justify-center px-4 pt-12 pb-2"
           style={{ minHeight: 260 }}
         >
-          <TreeSVG mood={mood} condition={condition} />
+          <TreeSVG mood={mood} condition={condition} harvestOverride={harvestOverride} />
         </motion.div>
 
         {/* Weather stats bar */}

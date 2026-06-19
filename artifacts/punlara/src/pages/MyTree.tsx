@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import LivingTree from "@/components/LivingTree";
 import { useTreeWeather } from "@/hooks/use-weather";
+import { computeHarvestCountdown } from "@/hooks/use-harvest-countdown";
 
 export default function MyTree() {
   const { isAuthenticated, login } = useAuth();
@@ -19,6 +20,10 @@ export default function MyTree() {
     primaryAdoption?.tree?.id,
     isAuthenticated && !!primaryAdoption
   );
+
+  const harvest = primaryAdoption && primaryAdoption.tree
+    ? computeHarvestCountdown(primaryAdoption.createdAt, primaryAdoption.tree.species ?? "Fruit")
+    : null;
 
   if (!isAuthenticated) {
     return (
@@ -131,7 +136,47 @@ export default function MyTree() {
                 weather={weather}
                 isLoading={weatherLoading}
                 treeName={primaryAdoption.treeName}
+                harvestSoon={harvest?.isHarvestSoon}
+                harvestVeryClose={harvest?.isHarvestVeryClose}
+                harvestReady={harvest?.isHarvestReady}
               />
+
+              {/* Harvest Countdown */}
+              {harvest && primaryAdoption.status === "active" && (
+                <div className={`rounded-2xl border p-5 ${harvest.isHarvestReady ? "bg-amber-50 border-amber-300" : harvest.isHarvestVeryClose ? "bg-yellow-50 border-yellow-300" : "bg-white border-border"}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className={`material-symbols-outlined text-[20px] ${harvest.isHarvestReady ? "text-amber-600" : "text-primary"}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                        {harvest.isHarvestReady ? "emoji_events" : "calendar_month"}
+                      </span>
+                      <h3 className={`font-serif font-bold ${harvest.isHarvestReady ? "text-amber-800" : "text-primary"}`}>
+                        {harvest.isHarvestReady ? "Harvest Ready!" : "Harvest Countdown"}
+                      </h3>
+                    </div>
+                    <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${harvest.isHarvestReady ? "bg-amber-400 text-white" : harvest.isHarvestVeryClose ? "bg-yellow-400 text-white" : harvest.isHarvestSoon ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}>
+                      {harvest.isHarvestReady ? "Ready Now" : `${harvest.daysRemaining} days`}
+                    </div>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden mb-3">
+                    <div
+                      className={`h-full rounded-full transition-all duration-1000 ${harvest.isHarvestReady ? "bg-amber-400" : harvest.isHarvestVeryClose ? "bg-yellow-400" : "progress-gradient"}`}
+                      style={{ width: `${harvest.progressPercent}%` }}
+                    />
+                  </div>
+
+                  <div className="flex justify-between text-xs text-muted-foreground mb-3">
+                    <span>Cycle start</span>
+                    <span className="font-semibold text-primary">{harvest.progressPercent}% complete</span>
+                    <span>Est. harvest: {harvest.harvestDate.toLocaleDateString("en-PH", { month: "short", day: "numeric" })}</span>
+                  </div>
+
+                  <p className={`text-sm leading-relaxed ${harvest.isHarvestReady ? "text-amber-800 font-semibold" : "text-muted-foreground"}`}>
+                    {harvest.message}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Growth Timeline */}
