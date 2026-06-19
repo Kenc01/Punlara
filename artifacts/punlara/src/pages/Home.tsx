@@ -70,28 +70,101 @@ export default function Home() {
       {/* How It Works */}
       <section id="how" className="bg-white py-24 border-y border-border">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-center text-primary mb-16">
-            Modern Stewardship in 4 Steps
-          </h2>
-          
-          <div className="relative grid md:grid-cols-4 gap-12 text-center">
-            <div className="hidden md:block absolute top-10 left-[12%] right-[12%] h-[2px] bg-muted z-0"></div>
-            
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-[#E8F0E9] text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
+              Simple. Transparent. Real.
+            </div>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-primary mb-4">
+              From Click to Harvest
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Punlara makes it easy to own a real, living fruit tree in Mindanao — no farming experience needed.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="grid md:grid-cols-2 gap-8 mb-20">
             {[
-              { icon: "search", title: "Browse Real Trees" },
-              { icon: "park", title: "We Plant & Tag It with a QR Code" },
-              { icon: "insights", title: "Get Monthly Farm Updates" },
-              { icon: "shopping_basket", title: "Receive Your Harvest at Your Door" }
-            ].map((step, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-white border-[4px] border-primary/10 flex items-center justify-center text-primary mb-6 shadow-sm">
-                  <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    {step.icon}
-                  </span>
+              {
+                step: "01",
+                icon: "search",
+                title: "Browse & Choose Your Tree",
+                desc: "Pick from 8+ fruit varieties — Mango, Mangosteen, Durian, Rambutan, and more. Each listing shows the farm location, estimated harvest yield in kg, and annual adoption fee.",
+                tag: "Takes 5 minutes",
+              },
+              {
+                step: "02",
+                icon: "qr_code",
+                title: "We Plant & Tag It With Your Name",
+                desc: "A Punlara farmer plants your tree, tags it with a QR code linked to your account, and sends you your official Adoption Certificate. You now own a living, named tree on a real Mindanao farm.",
+                tag: "Within 30 days",
+              },
+              {
+                step: "03",
+                icon: "photo_camera",
+                title: "Watch It Grow With Monthly Updates",
+                desc: "Your farmer sends monthly photo updates, weather data, and growth milestones straight to your dashboard. The Living Tree dashboard shows your tree's real-time mood based on actual farm weather.",
+                tag: "Every month",
+              },
+              {
+                step: "04",
+                icon: "local_shipping",
+                title: "Receive Your Harvest at Your Door",
+                desc: "When your tree is ready, you get your share of the harvest — fresh, dried, or processed — delivered anywhere in the Philippines. You can also opt to donate your harvest portion to a local community.",
+                tag: "Each harvest season",
+              },
+            ].map((s, i) => (
+              <div key={i} className="flex gap-6 p-8 rounded-[24px] border border-border hover:border-primary/20 hover:bg-[#FAFCFA] transition-all group">
+                <div className="flex-shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/5 group-hover:bg-primary/10 flex items-center justify-center text-primary transition-colors">
+                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>{s.icon}</span>
+                  </div>
                 </div>
-                <h3 className="font-serif font-bold text-lg text-primary max-w-[200px]">{step.title}</h3>
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xs font-black text-primary/30 tracking-widest">{s.step}</span>
+                    <span className="text-xs font-semibold text-secondary bg-secondary/10 px-2.5 py-0.5 rounded-full">{s.tag}</span>
+                  </div>
+                  <h3 className="font-serif font-bold text-xl text-primary mb-2">{s.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* FAQ strip */}
+          <div className="bg-[#FAFCFA] rounded-[28px] border border-border p-8 md:p-12">
+            <h3 className="font-serif font-bold text-2xl text-primary mb-8 text-center">Common Questions</h3>
+            <div className="grid md:grid-cols-2 gap-x-16 gap-y-6">
+              {[
+                { q: "Do I physically visit the farm?", a: "No visit required. Your tree lives on a partner farm in the Zamboanga Peninsula. You manage everything digitally through your Punlara dashboard." },
+                { q: "What if my tree gets damaged?", a: "Punlara provides tree replacement insurance for the first year. If your tree is damaged by a calamity or disease, we replant at no extra cost." },
+                { q: "How is the harvest delivered?", a: "Harvest is shipped via cold-chain courier to any Philippine address. International shipping for OFWs is available for processed/dried products." },
+                { q: "Can I sell or transfer my tree?", a: "Yes — trees are transferable. You can gift or transfer your adoption to another person directly through your dashboard." },
+                { q: "How are farmers compensated?", a: "Farmers receive 60% of the annual adoption fee upfront as operating capital, plus a revenue share on every harvest season." },
+                { q: "Is this available outside the Philippines?", a: "OFWs abroad can adopt trees and gift them to Philippine-based family members. Harvest delivery is to a Philippine address." },
+              ].map((faq, i) => (
+                <div key={i} className="flex gap-3">
+                  <span className="material-symbols-outlined text-primary/40 text-lg mt-0.5 flex-shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>help</span>
+                  <div>
+                    <div className="font-semibold text-primary text-sm mb-1">{faq.q}</div>
+                    <div className="text-muted-foreground text-sm leading-relaxed">{faq.a}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-14">
+            <Link href="/trees">
+              <button className="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full font-semibold flex items-center gap-2 mx-auto transition-all hover:gap-3">
+                Browse Available Trees
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </Link>
+            <p className="text-xs text-muted-foreground mt-4">Starting at ₱2,500/year · Cancel anytime</p>
           </div>
         </div>
       </section>

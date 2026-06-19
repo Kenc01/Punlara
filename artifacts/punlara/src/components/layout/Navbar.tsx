@@ -10,7 +10,7 @@ export default function Navbar() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/trees", label: "Our Trees" },
-    { href: "/#how", label: "How It Works" },
+    { href: "/#how", label: "How It Works", isHash: true },
   ];
 
   if (isAuthenticated) {
@@ -29,13 +29,24 @@ export default function Navbar() {
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              <span className={`text-sm font-medium transition-colors cursor-pointer ${
-                location === link.href ? "text-primary" : "text-muted-foreground hover:text-primary"
-              }`} data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}>
+            link.isHash ? (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium transition-colors cursor-pointer text-muted-foreground hover:text-primary"
+                data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+              >
                 {link.label}
-              </span>
-            </Link>
+              </a>
+            ) : (
+              <Link key={link.href} href={link.href}>
+                <span className={`text-sm font-medium transition-colors cursor-pointer ${
+                  location === link.href ? "text-primary" : "text-muted-foreground hover:text-primary"
+                }`} data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}>
+                  {link.label}
+                </span>
+              </Link>
+            )
           ))}
         </nav>
 
