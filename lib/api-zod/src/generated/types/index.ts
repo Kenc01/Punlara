@@ -18,6 +18,8 @@ export * from './checkoutSession';
 export * from './errorEnvelope';
 export * from './handleBrowserLoginCallbackParams';
 export * from './healthStatus';
+export * from './journalEntry';
+export * from './journalEntryInput';
 export * from './listTreesParams';
 export * from './logoutSuccess';
 export * from './mobileTokenExchangeRequest';

@@ -10,6 +10,7 @@ import Adopt from "@/pages/Adopt";
 import MyTree from "@/pages/MyTree";
 import Gift from "@/pages/Gift";
 import TreeProfile from "@/pages/TreeProfile";
+import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/my-tree" component={MyTree} />
       <Route path="/gift" component={Gift} />
       <Route path="/tree/:id" component={TreeProfile} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );

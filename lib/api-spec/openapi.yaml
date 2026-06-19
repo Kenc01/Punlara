@@ -16,6 +16,10 @@ tags:
     description: Tree catalog operations
   - name: Adoptions
     description: Tree adoption operations
+  - name: Journal
+    description: Tree farm journal entries
+  - name: Admin
+    description: Admin-only operations
 paths:
   /healthz:
     get:
@@ -332,6 +336,138 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogoutSuccess'
+  /trees/{id}/journal:
+    get:
+      tags: [Journal]
+      operationId: listJournalEntries
+      summary: List journal entries for a tree (public)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of journal entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JournalEntry'
+        '404':
+          description: Tree not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /admin/journal:
+    post:
+      tags: [Admin]
+      operationId: createJournalEntry
+      summary: Create a journal entry (admin only)
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntryInput'
+      responses:
+        '201':
+          description: Journal entry created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntry'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Not an admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /admin/journal/{id}:
+    delete:
+      tags: [Admin]
+      operationId: deleteJournalEntry
+      summary: Delete a journal entry (admin only)
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutSuccess'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Not an admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+  /admin/trees:
+    get:
+      tags: [Admin]
+      operationId: adminListTrees
+      summary: List all trees with their journal counts (admin only)
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationSessionHeader'
+        - $ref: '#/components/parameters/SessionCookie'
+      responses:
+        '200':
+          description: List of trees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tree'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Not an admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
 components:
   parameters:
     AuthorizationSessionHeader:
@@ -358,7 +494,7 @@ components:
         - status
     AuthUser:
       type: object
-      required: [id, email, firstName, lastName, profileImageUrl]
+      required: [id, email, firstName, lastName, profileImageUrl, isAdmin]
       properties:
         id:
           type: string
@@ -371,6 +507,8 @@ components:
           type: [string, 'null']
         profileImageUrl:
           type: [string, 'null']
+        isAdmin:
+          type: boolean
     AuthUserEnvelope:
       type: object
       required: [user]
@@ -521,3 +659,39 @@ components:
           type: string
         referenceNumber:
           type: string
+    JournalEntry:
+      type: object
+      required: [id, treeId, title, body, entryDate, createdAt]
+      properties:
+        id:
+          type: integer
+        treeId:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        photoUrl:
+          type: [string, 'null']
+        entryDate:
+          type: string
+          format: date
+        createdAt:
+          type: string
+    JournalEntryInput:
+      type: object
+      required: [treeId, title, body, entryDate]
+      properties:
+        treeId:
+          type: integer
+        title:
+          type: string
+          minLength: 1
+        body:
+          type: string
+          minLength: 1
+        photoUrl:
+          type: string
+        entryDate:
+          type: string
+          format: date

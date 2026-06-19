@@ -1,5 +1,5 @@
 import { useRoute, Link, useLocation } from "wouter";
-import { useGetTree } from "@workspace/api-client-react";
+import { useGetTree, useListJournalEntries } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -10,6 +10,10 @@ export default function TreeProfile() {
   const { isAuthenticated, login } = useAuth();
   
   const { data: tree, isLoading, isError } = useGetTree(treeId, {
+    query: { enabled: !!match && !!treeId }
+  });
+
+  const { data: journalEntries } = useListJournalEntries(treeId, {
     query: { enabled: !!match && !!treeId }
   });
 
@@ -135,6 +139,32 @@ export default function TreeProfile() {
               </div>
             )}
           </div>
+
+          {/* Farm Journal */}
+          {journalEntries && journalEntries.length > 0 && (
+            <div className="mt-8 pt-8 border-t border-border">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="material-symbols-outlined text-primary text-[20px]">menu_book</span>
+                <h2 className="font-bold text-primary">Farm Journal</h2>
+              </div>
+              <div className="space-y-4">
+                {journalEntries.map((entry) => (
+                  <div key={entry.id} className="bg-[#FAFCFA] border border-border rounded-2xl overflow-hidden">
+                    {entry.photoUrl && (
+                      <img src={entry.photoUrl} alt={entry.title} className="w-full h-40 object-cover" />
+                    )}
+                    <div className="p-4">
+                      <p className="text-xs text-muted-foreground font-medium mb-1">
+                        {new Date(entry.entryDate).toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}
+                      </p>
+                      <p className="font-semibold text-primary text-sm mb-2">{entry.title}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{entry.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
       </div>

@@ -82,10 +82,22 @@ async function upsertUser(claims: Record<string, unknown>) {
   return user;
 }
 
+function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+  return adminEmails.includes(email);
+}
+
 router.get("/auth/user", (req: Request, res: Response) => {
+  const user = req.isAuthenticated() ? req.user : null;
   res.json(
     GetCurrentAuthUserResponse.parse({
-      user: req.isAuthenticated() ? req.user : null,
+      user: user
+        ? { ...user, isAdmin: isAdminEmail(user.email) }
+        : null,
     }),
   );
 });

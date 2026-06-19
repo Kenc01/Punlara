@@ -19,6 +19,7 @@ export interface AuthUser {
   lastName: string | null;
   /** @nullable */
   profileImageUrl: string | null;
+  isAdmin: boolean;
 }
 
 export interface AuthUserEnvelope {
@@ -137,6 +138,27 @@ export interface CheckoutInput {
 export interface CheckoutSession {
   checkoutUrl: string;
   referenceNumber: string;
+}
+
+export interface JournalEntry {
+  id: number;
+  treeId: number;
+  title: string;
+  body: string;
+  /** @nullable */
+  photoUrl?: string | null;
+  entryDate: string;
+  createdAt: string;
+}
+
+export interface JournalEntryInput {
+  treeId: number;
+  /** @minLength 1 */
+  title: string;
+  /** @minLength 1 */
+  body: string;
+  photoUrl?: string;
+  entryDate: string;
 }
 
 /**

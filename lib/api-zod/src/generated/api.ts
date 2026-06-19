@@ -30,7 +30,8 @@ export const GetCurrentAuthUserResponse = zod.object({
   "email": zod.string().email().nullable(),
   "firstName": zod.string().nullable(),
   "lastName": zod.string().nullable(),
-  "profileImageUrl": zod.string().nullable()
+  "profileImageUrl": zod.string().nullable(),
+  "isAdmin": zod.boolean()
 }),zod.null()])
 })
 
@@ -272,5 +273,84 @@ export const CreateCheckoutSessionResponse = zod.object({
 export const HandlePaymentWebhookResponse = zod.object({
   "success": zod.boolean()
 })
+
+
+/**
+ * @summary List journal entries for a tree (public)
+ */
+export const ListJournalEntriesParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ListJournalEntriesResponseItem = zod.object({
+  "id": zod.number(),
+  "treeId": zod.number(),
+  "title": zod.string(),
+  "body": zod.string(),
+  "photoUrl": zod.string().nullish(),
+  "entryDate": zod.coerce.date(),
+  "createdAt": zod.string()
+})
+export const ListJournalEntriesResponse = zod.array(ListJournalEntriesResponseItem)
+
+
+/**
+ * @summary Create a journal entry (admin only)
+ */
+export const CreateJournalEntryHeader = zod.object({
+  "Authorization": zod.string().optional().describe('Opaque session token — `Bearer <sid>`.')
+})
+
+
+
+
+
+export const CreateJournalEntryBody = zod.object({
+  "treeId": zod.number(),
+  "title": zod.string().min(1),
+  "body": zod.string().min(1),
+  "photoUrl": zod.string().optional(),
+  "entryDate": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a journal entry (admin only)
+ */
+export const DeleteJournalEntryParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteJournalEntryHeader = zod.object({
+  "Authorization": zod.string().optional().describe('Opaque session token — `Bearer <sid>`.')
+})
+
+export const DeleteJournalEntryResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
+/**
+ * @summary List all trees with their journal counts (admin only)
+ */
+export const AdminListTreesHeader = zod.object({
+  "Authorization": zod.string().optional().describe('Opaque session token — `Bearer <sid>`.')
+})
+
+export const AdminListTreesResponseItem = zod.object({
+  "id": zod.number(),
+  "treeCode": zod.string(),
+  "name": zod.string(),
+  "species": zod.string(),
+  "tier": zod.enum(['Seedling', 'Classic', 'Premium']),
+  "pricePerYear": zod.number(),
+  "location": zod.string(),
+  "estimatedHarvestKg": zod.number(),
+  "imageUrl": zod.string(),
+  "status": zod.enum(['available', 'adopted']),
+  "description": zod.string().nullish(),
+  "co2PerYear": zod.number().nullish()
+})
+export const AdminListTreesResponse = zod.array(AdminListTreesResponseItem)
 
 
