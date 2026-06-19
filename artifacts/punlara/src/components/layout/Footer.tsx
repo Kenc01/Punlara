@@ -11,10 +11,12 @@ export default function Footer() {
           </div>
           
           <nav className="flex flex-wrap justify-center gap-6">
-            <Link href="/"><span className="text-white/80 hover:text-white cursor-pointer transition-colors">Home</span></Link>
-            <Link href="/trees"><span className="text-white/80 hover:text-white cursor-pointer transition-colors">Our Trees</span></Link>
-            <Link href="/#how"><span className="text-white/80 hover:text-white cursor-pointer transition-colors">How It Works</span></Link>
-            <Link href="/my-tree"><span className="text-white/80 hover:text-white cursor-pointer transition-colors">My Tree</span></Link>
+            <Link href="/"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-home">Home</span></Link>
+            <Link href="/trees"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-trees">Our Trees</span></Link>
+            <Link href="/#how"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-how">How It Works</span></Link>
+            <Link href="/adopt"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-adopt">Adopt</span></Link>
+            <Link href="/my-tree"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-mytree">My Tree</span></Link>
+            <Link href="/gift"><span className="text-white/80 hover:text-white cursor-pointer transition-colors" data-testid="link-footer-gift">Corporate & Gifts</span></Link>
           </nav>
 
           <div className="flex items-center gap-4">
