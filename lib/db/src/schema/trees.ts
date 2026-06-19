@@ -15,6 +15,7 @@ export const treesTable = pgTable("trees", {
   status: varchar("status", { length: 20 }).notNull().default("available"), // available, adopted
   description: text("description"),
   co2PerYear: integer("co2_per_year"),
+  farmerId: integer("farmer_id"), // optional FK to farmers table
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

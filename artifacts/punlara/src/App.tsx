@@ -11,6 +11,9 @@ import MyTree from "@/pages/MyTree";
 import Gift from "@/pages/Gift";
 import TreeProfile from "@/pages/TreeProfile";
 import Admin from "@/pages/Admin";
+import FarmerRegister from "@/pages/FarmerRegister";
+import FarmerDashboard from "@/pages/FarmerDashboard";
+import FarmerProfile from "@/pages/FarmerProfile";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +27,9 @@ function Router() {
       <Route path="/gift" component={Gift} />
       <Route path="/tree/:id" component={TreeProfile} />
       <Route path="/admin" component={Admin} />
+      <Route path="/become-a-farmer" component={FarmerRegister} />
+      <Route path="/farmer-dashboard" component={FarmerDashboard} />
+      <Route path="/farm/:id" component={FarmerProfile} />
       <Route component={NotFound} />
     </Switch>
   );

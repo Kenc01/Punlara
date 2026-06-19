@@ -5,12 +5,20 @@ import { useListMyAdoptions, useCreateCheckoutSession } from "@workspace/api-cli
 import { useAuth } from "@/hooks/use-auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import LivingTree from "@/components/LivingTree";
+import { useTreeWeather } from "@/hooks/use-weather";
 
 export default function MyTree() {
   const { isAuthenticated, login } = useAuth();
   const { data: adoptions, isLoading } = useListMyAdoptions({ query: { enabled: isAuthenticated } });
   const { toast } = useToast();
   const createCheckout = useCreateCheckoutSession();
+
+  const primaryAdoption = adoptions?.[0];
+  const { data: weather, isLoading: weatherLoading } = useTreeWeather(
+    primaryAdoption?.tree?.id,
+    isAuthenticated && !!primaryAdoption
+  );
 
   if (!isAuthenticated) {
     return (
@@ -43,8 +51,6 @@ export default function MyTree() {
       </div>
     )
   }
-
-  const primaryAdoption = adoptions?.[0];
 
   if (!primaryAdoption) {
     return (
@@ -85,7 +91,9 @@ export default function MyTree() {
       
       <div className="container mx-auto px-4 md:px-6 py-8">
         <header className="mb-8">
-          <h1 className="font-serif text-3xl md:text-4xl font-bold text-primary">Mabuhay, {primaryAdoption.stewardName.split(' ')[0]}! Here's your tree.</h1>
+          <h1 className="font-serif text-3xl md:text-4xl font-bold text-primary">
+            Mabuhay, {primaryAdoption.stewardName.split(' ')[0]}! Here's your tree.
+          </h1>
         </header>
 
         {primaryAdoption.status === "pending_payment" && (
@@ -104,36 +112,28 @@ export default function MyTree() {
           </div>
         )}
 
-        {/* Hero Banner */}
-        <div className="w-full h-[400px] rounded-[24px] overflow-hidden relative mb-8 shadow-xl group">
-          <img 
-            src={tree?.imageUrl || "/hero-orchard.png"} 
-            alt={tree?.species} 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-          
-          <div className="absolute top-6 right-6 bg-white/95 backdrop-blur px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-            <div className={`w-2 h-2 rounded-full ${primaryAdoption.status === 'active' ? 'bg-green-500 animate-pulse' : 'bg-amber-500'}`}></div>
-            <span className="text-sm font-bold text-primary">{primaryAdoption.status === 'active' ? 'Growing Strong' : 'Pending Activation'}</span>
-          </div>
-
-          <div className="absolute bottom-8 left-8 wooden-sign p-6 rounded-xl max-w-sm transform -rotate-2">
-            <div className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1 border-b border-white/20 pb-1 inline-block">Estate Registered</div>
-            <h1 className="font-serif text-3xl font-bold text-white mb-3">{primaryAdoption.treeName}</h1>
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-sm text-xs font-semibold text-white border border-white/10">{tree?.species || "Tree"}</span>
-              <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-sm text-xs font-semibold text-white border border-white/10">{tree?.location || "Mindanao"}</span>
-            </div>
-          </div>
-        </div>
-
         {/* Main Grid */}
         <div className="grid lg:grid-cols-12 gap-8">
           
           {/* Left Column (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
-            
+
+            {/* === LIVING TREE EXPERIENCE === */}
+            <div className="tonal-card p-6 md:p-8 rounded-[24px]">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-serif text-2xl font-bold text-primary">Your Living Tree</h2>
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  Live Weather
+                </div>
+              </div>
+              <LivingTree
+                weather={weather}
+                isLoading={weatherLoading}
+                treeName={primaryAdoption.treeName}
+              />
+            </div>
+
             {/* Growth Timeline */}
             <div className="tonal-card p-6 md:p-8 rounded-[24px]">
               <div className="flex justify-between items-center mb-8">
@@ -141,12 +141,10 @@ export default function MyTree() {
               </div>
 
               <div className="relative mb-12 mt-6">
-                {/* Progress track */}
                 <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 bg-muted rounded-full overflow-hidden">
                   <div className={`h-full ${primaryAdoption.status === 'active' ? 'progress-gradient w-[35%]' : 'bg-muted w-0'} rounded-full transition-all duration-1000`}></div>
                 </div>
                 
-                {/* Milestones */}
                 <div className="relative flex justify-between">
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-primary border-4 border-white shadow-sm z-10 flex items-center justify-center">
@@ -187,6 +185,57 @@ export default function MyTree() {
 
           {/* Right Column (5 cols) */}
           <div className="lg:col-span-5 space-y-8">
+
+            {/* Tree snapshot */}
+            <div className="w-full rounded-[24px] overflow-hidden relative shadow-xl group" style={{ aspectRatio: '16/10' }}>
+              <img 
+                src={tree?.imageUrl || "/hero-orchard.png"} 
+                alt={tree?.species} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+              
+              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-3 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
+                <div className={`w-2 h-2 rounded-full ${primaryAdoption.status === 'active' ? 'bg-green-500 animate-pulse' : 'bg-amber-500'}`}></div>
+                <span className="text-xs font-bold text-primary">{primaryAdoption.status === 'active' ? 'Growing Strong' : 'Pending Activation'}</span>
+              </div>
+
+              <div className="absolute bottom-4 left-4 right-4 wooden-sign p-4 rounded-xl transform -rotate-1">
+                <div className="text-xs font-bold text-white/70 uppercase tracking-widest mb-1">Estate Registered</div>
+                <h2 className="font-serif text-xl font-bold text-white mb-2">{primaryAdoption.treeName}</h2>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-sm text-xs font-semibold text-white border border-white/10">{tree?.species}</span>
+                  <span className="bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-sm text-xs font-semibold text-white border border-white/10">{tree?.location}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Current weather snapshot */}
+            {weather && (
+              <div className="bg-white rounded-[24px] border border-border p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>wb_sunny</span>
+                  <h3 className="font-serif font-bold text-primary">Farm Weather Now</h3>
+                </div>
+                <div className="text-sm text-muted-foreground mb-4">{weather.description} · {weather.location}</div>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { icon: "thermometer", label: "Temperature", value: `${weather.temperature}°C` },
+                    { icon: "water_drop", label: "Humidity", value: `${weather.humidity}%` },
+                    { icon: "grain", label: "Rainfall", value: `${weather.rain}mm` },
+                    { icon: "air", label: "Wind", value: `${weather.windspeed}km/h` },
+                  ].map(stat => (
+                    <div key={stat.label} className="bg-muted/30 rounded-xl p-3 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary text-[16px]">{stat.icon}</span>
+                      <div>
+                        <div className="text-xs text-muted-foreground">{stat.label}</div>
+                        <div className="font-bold text-primary text-sm">{stat.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             
             {/* Forest Guardian Impact */}
             <div className="tonal-card rounded-[24px] p-6">

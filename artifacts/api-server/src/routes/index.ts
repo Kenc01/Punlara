@@ -4,6 +4,8 @@ import authRouter from "./auth";
 import treesRouter from "./trees";
 import adoptionsRouter from "./adoptions";
 import journalRouter from "./journal";
+import weatherRouter from "./weather";
+import farmersRouter from "./farmers";
 
 const router: IRouter = Router();
 
@@ -12,5 +14,7 @@ router.use(authRouter);
 router.use(treesRouter);
 router.use(adoptionsRouter);
 router.use(journalRouter);
+router.use(weatherRouter);
+router.use(farmersRouter);
 
 export default router;
