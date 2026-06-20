@@ -1,7 +1,9 @@
-import { Link } from "wouter";
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
+import { useAuth as useClerkAuth } from "@clerk/react";
 import Navbar from "@/components/layout/Navbar";
 import MobileNav from "@/components/layout/MobileNav";
-import { useListMyAdoptions, useCreateCheckoutSession } from "@workspace/api-client-react";
+import { useListMyAdoptions } from "@workspace/api-client-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -11,9 +13,11 @@ import { computeHarvestCountdown } from "@/hooks/use-harvest-countdown";
 
 export default function MyTree() {
   const { isAuthenticated, login } = useAuth();
-  const { data: adoptions, isLoading } = useListMyAdoptions({ query: { enabled: isAuthenticated } });
+  const { getToken } = useClerkAuth();
+  const { data: adoptions, isLoading, refetch } = useListMyAdoptions({ query: { enabled: isAuthenticated } });
   const { toast } = useToast();
-  const createCheckout = useCreateCheckoutSession();
+  const [, setLocation] = useLocation();
+  const [paying, setPaying] = useState(false);
 
   const primaryAdoption = adoptions?.[0];
   const { data: weather, isLoading: weatherLoading } = useTreeWeather(
@@ -79,16 +83,26 @@ export default function MyTree() {
 
   const tree = primaryAdoption.tree;
 
-  const handlePayNow = () => {
-    createCheckout.mutate({ data: { adoptionId: primaryAdoption.id } }, {
-      onSuccess: (res) => {
-        window.location.href = res.checkoutUrl;
-      },
-      onError: () => {
-        toast({ title: "Error", description: "Could not initiate payment", variant: "destructive" });
-      }
-    });
-  }
+  const handlePayNow = async () => {
+    if (!primaryAdoption) return;
+    setPaying(true);
+    try {
+      const token = await getToken();
+      await fetch("/api/payments/demo-complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ adoptionId: primaryAdoption.id }),
+      });
+      await refetch();
+      toast({ title: "Payment confirmed!", description: "Your tree is now active." });
+    } catch {
+      toast({ title: "Error", description: "Could not process payment", variant: "destructive" });
+    }
+    setPaying(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFCFA] pt-20 pb-24 md:pb-12">
@@ -109,10 +123,10 @@ export default function MyTree() {
             </div>
             <button 
               onClick={handlePayNow}
-              disabled={createCheckout.isPending}
+              disabled={paying}
               className="bg-secondary text-white font-bold py-2 px-6 rounded-full hover:bg-secondary/90 transition-colors whitespace-nowrap"
             >
-              {createCheckout.isPending ? "Connecting..." : "Pay Now"}
+              {paying ? "Processing…" : "Pay Now"}
             </button>
           </div>
         )}
