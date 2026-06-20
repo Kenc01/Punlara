@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useSearch } from "wouter";
+import { useAuth as useClerkAuth } from "@clerk/react";
 import Navbar from "@/components/layout/Navbar";
 import MobileNav from "@/components/layout/MobileNav";
 import { useListTrees, useGetTree, useCreateAdoption, useCreateCheckoutSession, useGetAdoption } from "@workspace/api-client-react";
@@ -8,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 
 export default function Adopt() {
+  const { getToken } = useClerkAuth();
   const [, setLocation] = useLocation();
   const searchString = useSearch();
   const searchParams = new URLSearchParams(searchString);
@@ -18,6 +20,11 @@ export default function Adopt() {
   const [step, setStep] = useState(1);
   const [selectedTreeId, setSelectedTreeId] = useState<number | null>(treeIdParam ? parseInt(treeIdParam, 10) : null);
   const [createdAdoptionId, setCreatedAdoptionId] = useState<number | null>(null);
+
+  const [showDemoPayment, setShowDemoPayment] = useState(false);
+  const [demoAdoptionId, setDemoAdoptionId] = useState<number | null>(null);
+  const [selectedPayMethod, setSelectedPayMethod] = useState<string | null>(null);
+  const [demoProcessing, setDemoProcessing] = useState(false);
 
   const { toast } = useToast();
 
@@ -93,12 +100,39 @@ export default function Adopt() {
       data: { adoptionId: adId }
     }, {
       onSuccess: (data) => {
-        window.location.href = data.checkoutUrl;
+        if (data.checkoutUrl?.startsWith("/pay-demo")) {
+          const qs = data.checkoutUrl.split("?")[1] || "";
+          const pid = parseInt(new URLSearchParams(qs).get("adoptionId") || "0");
+          setDemoAdoptionId(pid);
+          setShowDemoPayment(true);
+        } else {
+          window.location.href = data.checkoutUrl;
+        }
       },
       onError: (err) => {
         toast({ title: "Checkout Error", description: err.error || "Could not initiate checkout", variant: "destructive" });
       }
     });
+  };
+
+  const handleDemoConfirm = async () => {
+    if (!selectedPayMethod || !demoAdoptionId) return;
+    setDemoProcessing(true);
+    await new Promise(r => setTimeout(r, 2200));
+    try {
+      const token = await getToken();
+      await fetch("/api/payments/demo-complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ adoptionId: demoAdoptionId }),
+      });
+    } catch { /* non-critical */ }
+    setDemoProcessing(false);
+    setShowDemoPayment(false);
+    setLocation(`/adopt?success=1&adoption=${demoAdoptionId}`);
   };
 
   const handlePayLater = () => {
@@ -501,6 +535,91 @@ export default function Adopt() {
 
       </div>
       <MobileNav />
+
+      {/* Demo Payment Modal */}
+      {showDemoPayment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-br from-[#00431b] to-[#006b2b] p-6 text-white text-center">
+              <div className="text-xs font-bold tracking-widest opacity-70 mb-1">SECURE PAYMENT</div>
+              <div className="font-serif text-2xl font-bold">Complete Your Adoption</div>
+              {selectedTree && (
+                <div className="mt-2 text-white/80 text-sm">₱{selectedTree.pricePerYear.toLocaleString()} · {formData.treeName || selectedTree.name}</div>
+              )}
+            </div>
+
+            <div className="p-6">
+              {!demoProcessing ? (
+                <>
+                  <p className="text-sm text-muted-foreground text-center mb-5 font-medium">Choose your payment method</p>
+
+                  <div className="space-y-3 mb-6">
+                    {[
+                      { id: "gcash", label: "GCash", icon: "account_balance_wallet", color: "bg-blue-50 border-blue-200 hover:border-blue-400", activeColor: "border-blue-500 bg-blue-50 ring-2 ring-blue-300", iconColor: "text-blue-600", tagColor: "bg-blue-100 text-blue-700", tag: "Instant" },
+                      { id: "maya", label: "Maya", icon: "payments", color: "bg-green-50 border-green-200 hover:border-green-400", activeColor: "border-green-500 bg-green-50 ring-2 ring-green-300", iconColor: "text-green-600", tagColor: "bg-green-100 text-green-700", tag: "Instant" },
+                      { id: "card", label: "Credit / Debit Card", icon: "credit_card", color: "bg-gray-50 border-gray-200 hover:border-gray-400", activeColor: "border-gray-500 bg-gray-50 ring-2 ring-gray-300", iconColor: "text-gray-600", tagColor: "bg-gray-100 text-gray-700", tag: "Visa · Mastercard" },
+                    ].map(method => (
+                      <button
+                        key={method.id}
+                        onClick={() => setSelectedPayMethod(method.id)}
+                        className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${selectedPayMethod === method.id ? method.activeColor : method.color}`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${method.iconColor} bg-white shadow-sm`}>
+                          <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>{method.icon}</span>
+                        </div>
+                        <span className="font-semibold text-primary flex-1 text-left">{method.label}</span>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${method.tagColor}`}>{method.tag}</span>
+                        {selectedPayMethod === method.id && (
+                          <span className="material-symbols-outlined text-primary text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowDemoPayment(false)}
+                      className="flex-1 py-3 rounded-full border-2 border-border text-muted-foreground font-semibold hover:border-primary hover:text-primary transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleDemoConfirm}
+                      disabled={!selectedPayMethod}
+                      className="flex-1 py-3 rounded-full bg-primary text-white font-bold hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Pay Now
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-1.5 mt-4">
+                    <span className="material-symbols-outlined text-muted-foreground text-sm">lock</span>
+                    <span className="text-xs text-muted-foreground">256-bit SSL · PCI-DSS Compliant</span>
+                  </div>
+                </>
+              ) : (
+                <div className="py-10 text-center">
+                  <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary text-3xl animate-spin" style={{ fontVariationSettings: "'FILL' 1" }}>progress_activity</span>
+                  </div>
+                  <div className="font-serif font-bold text-xl text-primary mb-1">Processing Payment</div>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedPayMethod === "gcash" ? "Connecting to GCash…" :
+                     selectedPayMethod === "maya" ? "Connecting to Maya…" :
+                     "Processing your card…"}
+                  </p>
+                  <div className="mt-6 flex justify-center gap-1.5">
+                    {[0, 1, 2].map(i => (
+                      <div key={i} className="w-2 h-2 rounded-full bg-primary/30 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

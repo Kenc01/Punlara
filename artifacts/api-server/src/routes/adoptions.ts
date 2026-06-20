@@ -129,13 +129,13 @@ router.post("/payments/checkout", async (req, res) => {
 
     const PAYMONGO_SECRET = process.env.PAYMONGO_SECRET_KEY;
     if (!PAYMONGO_SECRET) {
-      // No PayMongo key — return a demo/placeholder checkout URL for testing
-      const placeholderUrl = `https://checkout.paymongo.com/demo?ref=PNL-${adoption.id}`;
+      // Demo mode — return a special in-app URL the frontend intercepts
+      const demoUrl = `/pay-demo?adoptionId=${adoption.id}`;
       await db
         .update(adoptionsTable)
-        .set({ checkoutUrl: placeholderUrl, paymentId: `demo_${adoption.id}` })
+        .set({ checkoutUrl: demoUrl, paymentId: `demo_${adoption.id}` })
         .where(eq(adoptionsTable.id, adoption.id));
-      res.json({ checkoutUrl: placeholderUrl, referenceNumber: `PNL-${adoption.id.toString().padStart(6, "0")}` });
+      res.json({ checkoutUrl: demoUrl, referenceNumber: `PNL-${adoption.id.toString().padStart(6, "0")}` });
       return;
     }
 
@@ -195,6 +195,45 @@ router.post("/payments/checkout", async (req, res) => {
   } catch (err) {
     req.log.error(err);
     res.status(500).json({ error: "Failed to create checkout session" });
+  }
+});
+
+// Demo payment complete — marks adoption active without real payment
+router.post("/payments/demo-complete", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  try {
+    const { adoptionId } = req.body;
+    if (!adoptionId) {
+      res.status(400).json({ error: "adoptionId required" });
+      return;
+    }
+    const [adoption] = await db
+      .select()
+      .from(adoptionsTable)
+      .where(eq(adoptionsTable.id, adoptionId));
+
+    if (!adoption || adoption.userId !== req.user.id) {
+      res.status(404).json({ error: "Adoption not found" });
+      return;
+    }
+
+    await db
+      .update(adoptionsTable)
+      .set({ status: "active" })
+      .where(eq(adoptionsTable.id, adoption.id));
+
+    await db
+      .update(treesTable)
+      .set({ status: "adopted" })
+      .where(eq(treesTable.id, adoption.treeId));
+
+    res.json({ success: true });
+  } catch (err) {
+    req.log.error(err);
+    res.status(500).json({ error: "Failed to complete demo payment" });
   }
 });
 
