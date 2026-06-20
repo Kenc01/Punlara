@@ -76,6 +76,7 @@
     "zod": "catalog:"
   },
   "dependencies": {
-    "@clerk/react": "^6.10.2"
+    "@clerk/react": "^6.10.2",
+    "html2canvas": "^1.4.1"
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useSearch } from "wouter";
 import { useAuth as useClerkAuth } from "@clerk/react";
 import Navbar from "@/components/layout/Navbar";
@@ -11,6 +11,29 @@ import { Switch } from "@/components/ui/switch";
 export default function Adopt() {
   const { getToken } = useClerkAuth();
   const [, setLocation] = useLocation();
+  const certificateRef = useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownloadCertificate = async () => {
+    if (!certificateRef.current) return;
+    setDownloading(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(certificateRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        logging: false,
+      });
+      const link = document.createElement("a");
+      link.download = `punlara-certificate.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch {
+      /* silent */
+    }
+    setDownloading(false);
+  };
   const searchString = useSearch();
   const searchParams = new URLSearchParams(searchString);
   const treeIdParam = searchParams.get("treeId");
@@ -466,7 +489,7 @@ export default function Adopt() {
                 </p>
 
                 {/* Certificate Card */}
-                <div className="bg-white border-[8px] border-[#F4A726] rounded-xl shadow-2xl p-8 md:p-12 mb-10 text-left relative overflow-hidden print:border-4 print:shadow-none print:m-0">
+                <div ref={certificateRef} className="bg-white border-[8px] border-[#F4A726] rounded-xl shadow-2xl p-8 md:p-12 mb-10 text-left relative overflow-hidden print:border-4 print:shadow-none print:m-0">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 print:hidden"></div>
                   
                   <div className="flex flex-col items-center justify-center mb-10">
@@ -515,9 +538,22 @@ export default function Adopt() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 print:hidden">
-                  <button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all">
-                    <span className="material-symbols-outlined text-[20px]">download</span>
-                    Download Certificate
+                  <button
+                    onClick={handleDownloadCertificate}
+                    disabled={downloading}
+                    className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-60"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">
+                      {downloading ? "progress_activity" : "download"}
+                    </span>
+                    {downloading ? "Generating…" : "Download Certificate"}
+                  </button>
+                  <button
+                    onClick={() => window.print()}
+                    className="w-full sm:w-auto border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full font-semibold flex items-center justify-center gap-2 transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">print</span>
+                    Print
                   </button>
                 </div>
                 
