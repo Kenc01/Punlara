@@ -6,6 +6,7 @@ import adoptionsRouter from "./adoptions";
 import journalRouter from "./journal";
 import weatherRouter from "./weather";
 import farmersRouter from "./farmers";
+import adminRouter from "./admin";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(adoptionsRouter);
 router.use(journalRouter);
 router.use(weatherRouter);
 router.use(farmersRouter);
+router.use(adminRouter);
 
 export default router;
