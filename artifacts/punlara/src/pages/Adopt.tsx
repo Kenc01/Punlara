@@ -3,7 +3,7 @@ import { Link, useLocation, useSearch } from "wouter";
 import { useAuth as useClerkAuth } from "@clerk/react";
 import Navbar from "@/components/layout/Navbar";
 import MobileNav from "@/components/layout/MobileNav";
-import { useListTrees, useGetTree, useCreateAdoption, useCreateCheckoutSession, useGetAdoption } from "@workspace/api-client-react";
+import { useListTrees, useGetTree, useCreateAdoption, useGetAdoption } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
@@ -55,7 +55,6 @@ export default function Adopt() {
   const { data: selectedTree, isLoading: isLoadingTree } = useGetTree(selectedTreeId || 0, { query: { enabled: !!selectedTreeId } });
   
   const createAdoption = useCreateAdoption();
-  const createCheckout = useCreateCheckoutSession();
   
   const { data: successAdoption, isLoading: isLoadingAdoption } = useGetAdoption(
     parseInt(adoptionIdParam || "0"), 
@@ -441,10 +440,9 @@ export default function Adopt() {
                 <div className="space-y-4">
                   <button 
                     onClick={handleCheckout}
-                    disabled={createCheckout.isPending}
-                    className="w-full bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                    className="w-full bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 transition-all"
                   >
-                    {createCheckout.isPending ? "Connecting..." : "Pay with GCash / Maya / Card"}
+                    Pay with GCash / Maya / Card
                   </button>
                   <button 
                     onClick={handlePayLater}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useAuth as useClerkAuth } from "@clerk/react";
 import Navbar from "@/components/layout/Navbar";
 import MobileNav from "@/components/layout/MobileNav";
@@ -16,7 +16,6 @@ export default function MyTree() {
   const { getToken } = useClerkAuth();
   const { data: adoptions, isLoading, refetch } = useListMyAdoptions({ query: { enabled: isAuthenticated } });
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
   const [paying, setPaying] = useState(false);
 
   const primaryAdoption = adoptions?.[0];
