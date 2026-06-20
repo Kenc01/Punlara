@@ -12,6 +12,8 @@ export interface Farmer {
   treeCount: number;
   status: string;
   commissionRate: string;
+  lat: string | null;
+  lng: string | null;
   createdAt: string;
 }
 

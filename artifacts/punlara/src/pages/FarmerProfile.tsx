@@ -132,6 +132,31 @@ export default function FarmerProfile() {
             </div>
           </div>
 
+          {/* Farm Map */}
+          {(farmer.lat && farmer.lng) && (
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-[20px] border border-border overflow-hidden">
+                <div className="flex items-center gap-2 px-6 pt-5 pb-3">
+                  <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+                  <h3 className="font-serif font-bold text-primary">Farm Location</h3>
+                  <span className="ml-auto text-xs text-muted-foreground">{farmer.location}</span>
+                </div>
+                <iframe
+                  title="Farm location map"
+                  className="w-full"
+                  height="220"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${parseFloat(farmer.lng) - 0.04},${parseFloat(farmer.lat) - 0.04},${parseFloat(farmer.lng) + 0.04},${parseFloat(farmer.lat) + 0.04}&layer=mapnik&marker=${farmer.lat},${farmer.lng}`}
+                />
+                <div className="px-6 py-3 bg-muted/30 text-xs text-muted-foreground flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px]">info</span>
+                  Zamboanga Peninsula, Mindanao · <a href={`https://www.openstreetmap.org/?mlat=${farmer.lat}&mlon=${farmer.lng}#map=14/${farmer.lat}/${farmer.lng}`} target="_blank" rel="noreferrer" className="underline hover:text-primary transition-colors">Open in maps</a>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Tree listings */}
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-6">

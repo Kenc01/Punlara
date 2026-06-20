@@ -282,6 +282,26 @@ export default function MyTree() {
               </div>
             )}
             
+            {/* Meet Your Farmer */}
+            {tree?.farmerId && (
+              <Link href={`/farm/${tree.farmerId}`}>
+                <div className="bg-white rounded-[24px] border border-border p-5 flex items-center gap-4 hover:border-primary hover:shadow-md transition-all cursor-pointer group">
+                  <div className="w-12 h-12 rounded-full bg-[#E8F0E9] flex items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>person</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-0.5">Tending Your Tree</div>
+                    <div className="font-serif font-bold text-primary truncate">Meet Your Farmer</div>
+                    <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                      <span className="material-symbols-outlined text-[12px]">location_on</span>
+                      {tree.location}
+                    </div>
+                  </div>
+                  <span className="material-symbols-outlined text-muted-foreground group-hover:text-primary transition-colors">chevron_right</span>
+                </div>
+              </Link>
+            )}
+
             {/* Forest Guardian Impact */}
             <div className="tonal-card rounded-[24px] p-6">
               <div className="flex items-center gap-3 mb-6 border-b border-border pb-4">
