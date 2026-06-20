@@ -118,24 +118,8 @@ export default function Adopt() {
   const handleCheckout = () => {
     const adId = createdAdoptionId;
     if (!adId) return;
-
-    createCheckout.mutate({
-      data: { adoptionId: adId }
-    }, {
-      onSuccess: (data) => {
-        if (data.checkoutUrl?.startsWith("/pay-demo")) {
-          const qs = data.checkoutUrl.split("?")[1] || "";
-          const pid = parseInt(new URLSearchParams(qs).get("adoptionId") || "0");
-          setDemoAdoptionId(pid);
-          setShowDemoPayment(true);
-        } else {
-          window.location.href = data.checkoutUrl;
-        }
-      },
-      onError: (err) => {
-        toast({ title: "Checkout Error", description: err.error || "Could not initiate checkout", variant: "destructive" });
-      }
-    });
+    setDemoAdoptionId(adId);
+    setShowDemoPayment(true);
   };
 
   const handleDemoConfirm = async () => {
